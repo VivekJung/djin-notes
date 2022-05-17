@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "488726549710",
+    "project_id": "djin-notes",
+    "storage_bucket": "djin-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488726549710:android:26eefa5c28dcb7d00bac9f",
+        "android_client_info": {
+          "package_name": "com.djinworks.notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488726549710-oljtaf94106grbmenlibckosrjsroq1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXRQO1e3oT4pLCZCscFobVU0XnB0rw4g8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488726549710-oljtaf94106grbmenlibckosrjsroq1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
