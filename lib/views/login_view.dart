@@ -61,7 +61,7 @@ class _LoginViewState extends State<LoginView> {
                   email: email,
                   password: password,
                 );
-                print(userCredential);
+                // print(userCredential);
               } on FirebaseAuthException catch (e) {
                 e.code == 'user-not-found'
                     ? print('The user is not yet registered')
