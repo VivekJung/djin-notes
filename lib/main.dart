@@ -5,6 +5,7 @@ import 'package:notes/views/login_view.dart';
 import 'package:notes/views/notes_view.dart';
 import 'package:notes/views/register_view.dart';
 import 'package:notes/views/verify_emailnew.dart';
+import 'dart:developer' as devtools show log;
 
 import 'firebase_options.dart';
 
@@ -20,7 +21,7 @@ void main() {
     routes: {
       '/login/': (context) => const LoginView(),
       '/register/': (context) => const RegisterView(),
-      // '/': (context) => const HomePage(),
+      '/notes/': (context) => const NotesView(),
     },
   ));
 }
@@ -46,7 +47,7 @@ class HomePage extends StatelessWidget {
                 final user = (FirebaseAuth.instance.currentUser);
                 if (user != null) {
                   if (user.emailVerified) {
-                    print('Email is verified');
+                    devtools.log('Email is verified');
                     return const NotesView();
                   } else {
                     return const VerifyEmailView();
