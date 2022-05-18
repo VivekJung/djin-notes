@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:notes/constants/routes.dart';
+import 'package:notes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -63,16 +64,28 @@ class _LoginViewState extends State<LoginView> {
                   email: email,
                   password: password,
                 );
-                // devtools.log(userCredential.toString());
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  notesRoute,
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
-                e.code == 'user-not-found'
-                    ? devtools.log('The user is not yet registered')
-                    : devtools.log('User found');
-                e.code == 'wrong-password'
-                    ? devtools.log('Password wrong')
-                    : devtools.log('Password okay');
+                if (e.code == 'user-not-found') {
+                  devtools.log('The user is not yet registered');
+                  showErrorDialog(context, 'User not registered yet');
+                } else if (e.code == 'wrong-password') {
+                  devtools.log('Password wrong');
+                  showErrorDialog(
+                      context, 'Password not accurate. Please re-try');
+                } else if (e.code.toString() == '') {
+                  devtools.log(e.code);
+                  showErrorDialog(context, 'Empty credential(s)');
+                } else {
+                  await showErrorDialog(context, 'Error: ${e.code}');
+                }
+              } catch (e) {
+                devtools.log(e.toString());
+                await showErrorDialog(context, 'Error: $e');
               }
             },
             child: const Text('Login'),

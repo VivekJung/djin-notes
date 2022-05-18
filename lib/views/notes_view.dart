@@ -3,6 +3,7 @@ import 'dart:developer' as devtools show log;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
+import 'package:notes/main.dart';
 
 enum MenuAction { logout }
 
@@ -53,30 +54,4 @@ class _NotesViewState extends State<NotesView> {
       body: const Text('Hello World'),
     );
   }
-}
-
-//Creating dialog for logout function
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Sign out'),
-        content: const Text('Do you really want to leave?'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-                //using true or false because we showing dialog in boolean format <bool>
-              },
-              child: const Text('No')),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Yes')),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
 }

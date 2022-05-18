@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:notes/constants/routes.dart';
+import 'package:notes/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -75,13 +76,18 @@ class _RegisterViewState extends State<RegisterView> {
                 devtools.log(e.toString());
                 if (e.code == 'weak-password') {
                   // dialogBox();
+                  showErrorDialog(context, e.toString());
                   devtools.log(e.code.toString());
                 }
                 if (e.code == 'email-already-in-use') {
+                  showErrorDialog(context, e.toString());
                   devtools.log(e.code.toString());
                 } else if (e.code == 'invalid-email') {
+                  showErrorDialog(context, e.toString());
                   devtools.log(e.code.toString());
                 }
+              } catch (e) {
+                await showErrorDialog(context, e.toString());
               }
             },
             child: const Text('Register'),
