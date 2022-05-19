@@ -59,27 +59,23 @@ class _LoginViewState extends State<LoginView> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
+
               try {
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoute,
-                  (route) => false,
-                );
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(notesRoute, (route) => false);
               } on FirebaseAuthException catch (e) {
+                devtools.log('$e');
                 if (e.code == 'user-not-found') {
-                  devtools.log('The user is not yet registered');
-                  showErrorDialog(context, 'User not registered yet');
+                  await showErrorDialog(context, 'User not registered yet');
                 } else if (e.code == 'wrong-password') {
-                  devtools.log('Password wrong');
-                  showErrorDialog(
+                  await showErrorDialog(
                       context, 'Password not accurate. Please re-try');
                 } else if (e.code.toString() == '') {
-                  devtools.log(e.code);
-                  showErrorDialog(context, 'Empty credential(s)');
+                  await showErrorDialog(context, 'Empty credential(s)');
                 } else {
                   await showErrorDialog(context, 'Error: ${e.code}');
                 }

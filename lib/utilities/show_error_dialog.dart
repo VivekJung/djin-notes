@@ -4,6 +4,7 @@ Future<void> showErrorDialog(
   BuildContext context,
   String text,
 ) {
+  // Future.delayed(const Duration(seconds: 1));
   return showDialog(
       context: context,
       builder: (context) {

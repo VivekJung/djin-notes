@@ -66,26 +66,29 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on FirebaseAuthException catch (e) {
                 devtools.log(e.toString());
+
+                ///USE THIS
                 if (e.code == 'weak-password') {
-                  // dialogBox();
-                  showErrorDialog(context, e.toString());
-                  devtools.log(e.code.toString());
-                }
-                if (e.code == 'email-already-in-use') {
-                  showErrorDialog(context, e.toString());
-                  devtools.log(e.code.toString());
+                  await showErrorDialog(context, e.toString());
+                } else if (e.code == 'email-already-in-use') {
+                  await showErrorDialog(context, e.toString());
+                  // devtools.log(e.code.toString());
                 } else if (e.code == 'invalid-email') {
-                  showErrorDialog(context, e.toString());
-                  devtools.log(e.code.toString());
+                  await showErrorDialog(context, e.toString());
+                } else {
+                  await showErrorDialog(context, e.toString());
                 }
+                // OR
+                //  showErrorDialog(context, e.toString());
               } catch (e) {
                 await showErrorDialog(context, e.toString());
               }
