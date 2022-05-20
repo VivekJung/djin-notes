@@ -64,17 +64,17 @@ class _RegisterViewState extends State<RegisterView> {
                   email: email,
                   password: password,
                 );
-                final user = AuthService.firebase().currentUser;
-                log('${user?.isEmailVerified}');
-                if (user?.isEmailVerified ?? false) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    notesRoute,
-                    (route) => false,
-                  );
-                } else {
-                  await AuthService.firebase().sendEmailVerification();
-                  Navigator.of(context).pushNamed(verifyEmailRoute);
-                }
+                // final user = AuthService.firebase().currentUser;
+                // log('${user?.isEmailVerified}');
+                // if (user?.isEmailVerified ?? false) {
+                //   Navigator.of(context).pushNamedAndRemoveUntil(
+                //     notesRoute,
+                //     (route) => false,
+                //   );
+                // } else {
+                //   await AuthService.firebase().sendEmailVerification();
+                //   Navigator.of(context).pushNamed(verifyEmailRoute);
+                // }
               } on WeakPasswordAuthException {
                 await showErrorDialog(
                   context,

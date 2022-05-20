@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:notes/firebase_options.dart';
 import 'package:notes/services/auth/auth_exceptions.dart';
@@ -31,11 +33,12 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       final user = currentUser;
+      log("FIREBASE" + user.toString());
       if (user != null) {
         return user;
       } else {
@@ -51,7 +54,8 @@ class FirebaseAuthProvider implements AuthProvider {
       } else {
         throw GenericAuthException();
       }
-    } catch (_) {
+    } catch (e) {
+      log("FIREBASE Catch" + e.toString());
       throw GenericAuthException();
     }
   }
