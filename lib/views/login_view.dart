@@ -1,9 +1,8 @@
 //Login View PAGE
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:notes/constants/routes.dart';
+import 'package:notes/services/auth/auth_exceptions.dart';
+import 'package:notes/services/auth/auth_service.dart';
 import 'package:notes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -39,6 +38,7 @@ class _LoginViewState extends State<LoginView> {
       body: Column(
         children: [
           //UNAME
+
           TextField(
             controller: _email,
             enableSuggestions: false,
@@ -61,12 +61,13 @@ class _LoginViewState extends State<LoginView> {
               final password = _password.text;
 
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     notesRoute,
                     (route) => false,
@@ -77,21 +78,21 @@ class _LoginViewState extends State<LoginView> {
                     (route) => false,
                   );
                 }
-              } on FirebaseAuthException catch (e) {
-                devtools.log('$e');
-                if (e.code == 'user-not-found') {
-                  await showErrorDialog(context, 'User not registered yet');
-                } else if (e.code == 'wrong-password') {
-                  await showErrorDialog(
-                      context, 'Password not accurate. Please re-try');
-                } else if (e.code.toString() == '') {
-                  await showErrorDialog(context, 'Empty credential(s)');
-                } else {
-                  await showErrorDialog(context, 'Error: ${e.code}');
-                }
-              } catch (e) {
-                devtools.log(e.toString());
-                await showErrorDialog(context, 'Error: $e');
+              } on UserNotFoundAuthException {
+                await showErrorDialog(
+                  context,
+                  'User not registered yet',
+                );
+              } on WrongPasswordAuthException {
+                await showErrorDialog(
+                  context,
+                  'Password not accurate. Please re-try',
+                );
+              } on GenericAuthException {
+                await showErrorDialog(
+                  context,
+                  'Authentication Error',
+                );
               }
             },
             child: const Text('Login'),
