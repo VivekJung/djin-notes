@@ -13,11 +13,17 @@ class NotesService {
 
   //creating singleton
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DataBaseNotes>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DataBaseNotes>>.broadcast();
+  late final StreamController<List<DataBaseNotes>> _notesStreamController;
+
   Stream<List<DataBaseNotes>> get allNotes => _notesStreamController.stream;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
@@ -309,7 +315,7 @@ class DataBaseNotes {
   int get hashCode => id.hashCode;
 }
 
-const dbName = 'testing.db';
+const dbName = 'note.db';
 const noteTable = 'notes';
 const userTable = 'user';
 const idColumn = 'id';
