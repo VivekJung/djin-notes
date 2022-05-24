@@ -309,8 +309,8 @@ class DataBaseNotes {
   int get hashCode => id.hashCode;
 }
 
-const dbName = 'notes.db';
-const noteTable = 'note';
+const dbName = 'testing.db';
+const noteTable = 'notes';
 const userTable = 'user';
 const idColumn = 'id';
 const emailColumn = 'email';
